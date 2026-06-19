@@ -30,6 +30,10 @@ void DAQ_Init(void)
 {
     HAL_TIM_Base_Start_IT(&htim2);
     HAL_UART_Receive_IT(&huart1, &rx_byte, 1);
+
+    /* KEY_TRANS (PA0) EXTI0 中断: 优先级3, 低于TIM2(1)和USART1(2) */
+    HAL_NVIC_SetPriority(EXTI0_IRQn, 3, 0);
+    HAL_NVIC_EnableIRQ(EXTI0_IRQn);
 }
 
 /* ======================== 数据帧发送 ======================== */
@@ -66,6 +70,17 @@ void ProcessCommand(uint8_t cmd)
             break;
         default:
             break;
+    }
+}
+
+/**
+  * @brief  GPIO EXTI中断回调
+  * @note   KEY_TRANS (PA0) 上升沿触发 → 立即发送当前IO状态帧
+  */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+    if (GPIO_Pin == KEY_TRANS_Pin) {
+        SendDataFrame(io_status);   /* 发送当前8路IO状态 */
     }
 }
 

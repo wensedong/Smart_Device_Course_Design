@@ -26,9 +26,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "oled.h"
+#include "daq.h"
+#include "display.h"
 #include <stdio.h>
-//#include "daq.h"
-//#include "display.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,28 +97,11 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 
-  /* ---- OLED 测试 ---- */
-  OLED_Init();
-  OLED_CLS();
+  /* ---- 显示初始化 (OLED启动画面 + LED自检) ---- */
+  Display_Init();
 
-  /* 测试 6x8 字体: 全屏填满字符 */
-  OLED_ShowStr(0, 0, (unsigned char *)"STM32F407ZGT6 OLED", 1);
-  OLED_ShowStr(0, 1, (unsigned char *)"6x8 Font: ABC abc 123", 1);
-  OLED_ShowStr(0, 2, (unsigned char *)"!@#$%^&*()_+-=[]{}", 1);
-  OLED_ShowStr(0, 3, (unsigned char *)"Hello World!", 1);
-  OLED_ShowStr(0, 4, (unsigned char *)"Remote DAQ Project", 1);
-  OLED_ShowStr(0, 5, (unsigned char *)"I2C2: PB10 SCL PB11 SDA", 1);
-  OLED_ShowStr(0, 6, (unsigned char *)"Address: 0x78 (7bit:0x3C)", 1);
-  OLED_ShowStr(0, 7, (unsigned char *)"OLED Test Passed!", 1);
-
-  HAL_Delay(3000);
-
-  /* 测试 8x16 大字 */
-  OLED_CLS();
-  OLED_ShowStr(0, 0, (unsigned char *)"8x16 Font", 2);
-  OLED_ShowStr(0, 2, (unsigned char *)"CH0:1 CH1:0", 2);
-  OLED_ShowStr(0, 4, (unsigned char *)"CH2:1 CH3:0", 2);
-  OLED_ShowStr(0, 6, (unsigned char *)"Sample: 1234", 2);
+  /* ---- 数据采集启动 (TIM2 100ms + USART1接收中断) ---- */
+  DAQ_Init();
 
   /* USER CODE END 2 */
 
@@ -129,7 +112,19 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    /* 静态显示, 不循环刷新 */
+    if (data_ready) {
+      data_ready = 0;
+
+      /* 1. 刷新LED (实时) */
+      UpdateLEDs(io_status);
+
+      /* 2. 每5次采样(500ms)刷新OLED */
+      static uint8_t tick = 0;
+      if (++tick >= OLED_UPDATE_TICK) {
+        tick = 0;
+        UpdateOLEDDisplay(io_status);
+      }
+    }
   }
   /* USER CODE END 3 */
 }
