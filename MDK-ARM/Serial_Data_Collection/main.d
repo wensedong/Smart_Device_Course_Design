@@ -37,7 +37,7 @@ serial_data_collection\main.o: ../Core/Inc/i2c.h
 serial_data_collection\main.o: ../Core/Inc/tim.h
 serial_data_collection\main.o: ../Core/Inc/usart.h
 serial_data_collection\main.o: ../Core/Inc/gpio.h
-serial_data_collection\main.o: ../Core/Inc/oled.h
-serial_data_collection\main.o: ../Core/Inc/daq.h
-serial_data_collection\main.o: ../Core/Inc/display.h
+serial_data_collection\main.o: ..\Mycode\oled.h
+serial_data_collection\main.o: ..\Mycode\daq.h
+serial_data_collection\main.o: ..\Mycode\display.h
 serial_data_collection\main.o: F:\keil_v5.41\ARM\ARMCC\Bin\..\include\stdio.h

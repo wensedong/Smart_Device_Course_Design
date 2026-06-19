@@ -1,5 +1,5 @@
-serial_data_collection\display.o: ..\Core\Src\display.c
-serial_data_collection\display.o: ../Core/Inc/display.h
+serial_data_collection\display.o: ..\Mycode\display.c
+serial_data_collection\display.o: ..\Mycode\display.h
 serial_data_collection\display.o: ../Core/Inc/main.h
 serial_data_collection\display.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 serial_data_collection\display.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -34,9 +34,9 @@ serial_data_collection\display.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_
 serial_data_collection\display.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 serial_data_collection\display.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 serial_data_collection\display.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-serial_data_collection\display.o: ../Core/Inc/oled.h
+serial_data_collection\display.o: ..\Mycode\oled.h
 serial_data_collection\display.o: ../Core/Inc/i2c.h
-serial_data_collection\display.o: ../Core/Inc/daq.h
+serial_data_collection\display.o: ..\Mycode\daq.h
 serial_data_collection\display.o: ../Core/Inc/tim.h
 serial_data_collection\display.o: ../Core/Inc/usart.h
 serial_data_collection\display.o: F:\keil_v5.41\ARM\ARMCC\Bin\..\include\stdio.h

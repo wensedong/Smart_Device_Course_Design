@@ -1,5 +1,5 @@
-serial_data_collection\daq.o: ..\Core\Src\daq.c
-serial_data_collection\daq.o: ../Core/Inc/daq.h
+serial_data_collection\daq.o: ..\Mycode\daq.c
+serial_data_collection\daq.o: ..\Mycode\daq.h
 serial_data_collection\daq.o: ../Core/Inc/main.h
 serial_data_collection\daq.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 serial_data_collection\daq.o: ../Core/Inc/stm32f4xx_hal_conf.h

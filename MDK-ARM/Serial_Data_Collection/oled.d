@@ -1,5 +1,5 @@
-serial_data_collection\oled.o: ..\Core\Src\oled.c
-serial_data_collection\oled.o: ../Core/Inc/oled.h
+serial_data_collection\oled.o: ..\Mycode\oled.c
+serial_data_collection\oled.o: ..\Mycode\oled.h
 serial_data_collection\oled.o: ../Core/Inc/main.h
 serial_data_collection\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
 serial_data_collection\oled.o: ../Core/Inc/stm32f4xx_hal_conf.h
@@ -35,4 +35,4 @@ serial_data_collection\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal
 serial_data_collection\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 serial_data_collection\oled.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 serial_data_collection\oled.o: ../Core/Inc/i2c.h
-serial_data_collection\oled.o: ../Core/Inc/codetab.h
+serial_data_collection\oled.o: ..\Mycode\codetab.h

@@ -112,18 +112,20 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    if (data_ready) {
-      data_ready = 0;
+    /* 1. 发送数据帧 (手动按键 或 自动1s) */
+    if (send_flag) {
+      send_flag = 0;
+      SendDataFrame(io_state);
+      sample_count++;
+    }
 
-      /* 1. 刷新LED (实时) */
-      UpdateLEDs(io_status);
+    /* 2. LED实时跟随 */
+    UpdateLEDs(io_state);
 
-      /* 2. 每5次采样(500ms)刷新OLED */
-      static uint8_t tick = 0;
-      if (++tick >= OLED_UPDATE_TICK) {
-        tick = 0;
-        UpdateOLEDDisplay(io_status);
-      }
+    /* 3. OLED 500ms刷新 */
+    if (oled_flag) {
+      oled_flag = 0;
+      UpdateOLEDDisplay(io_state);
     }
   }
   /* USER CODE END 3 */
