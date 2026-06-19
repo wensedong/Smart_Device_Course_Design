@@ -113,7 +113,8 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     /* 1. 发送数据帧 (手动按键 或 自动1s) */
-    if (send_flag) {
+    if (send_flag) 
+		{
       send_flag = 0;
       SendDataFrame(io_state);
       sample_count++;
@@ -123,7 +124,8 @@ int main(void)
     UpdateLEDs(io_state);
 
     /* 3. OLED 500ms刷新 */
-    if (oled_flag) {
+    if (oled_flag) 
+		{
       oled_flag = 0;
       UpdateOLEDDisplay(io_state);
     }
