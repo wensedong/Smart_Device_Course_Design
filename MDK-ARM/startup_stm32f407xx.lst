@@ -850,9 +850,9 @@ ARM Macro Assembler    Page 14
 
 
 ollection\startup_stm32f407xx.o -I.\RTE\_Serial_Data_Collection -IC:\Users\asus
-\AppData\Local\Arm\Packs\ARM\CMSIS\6.1.0\CMSIS\Core\Include -IC:\Users\asus\App
+\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include -IC:\Users\asus\App
 Data\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4x
-x\Include --predefine="__UVISION_VERSION SETA 541" --predefine="STM32F407xx SET
+x\Include --predefine="__UVISION_VERSION SETA 543" --predefine="STM32F407xx SET
 A 1" --predefine="_RTE_ SETA 1" --list=startup_stm32f407xx.lst startup_stm32f40
 7xx.s
 
