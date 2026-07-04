@@ -3,10 +3,12 @@
  * @file    daq.h
  * @brief   数据采集与通信模块
  *          - 8路IO按钮 (PD1~PD9 EXTI) → 翻转 io_state 对应位
- *          - KEY_AUTO  (PA0 EXTI0) → 手动模式: 立即发送一次
- *          - KEY_MAUUL (PE4 EXTI4) → 自动模式: 1s周期发送
- *          - TIM2 100ms → 自动模式计数 + OLED刷新定时
+ *          - KEY_AUTO  (PA0 EXTI0) → 手动模式: 清零mode_count + 立即发送
+ *          - KEY_MAUUL (PE4 EXTI4) → 三态: MANUAL→AUTO(运行)→AUTO(暂停)→...
+ *          - TIM2 100ms → 自动1s发送 + OLED刷新定时
  *          - USART1 → PC指令接收
+ *
+ *          计数: total_count 永不重置; mode_count 切 MANUAL↔AUTO 清零
  ******************************************************************************
  */
 
@@ -30,20 +32,22 @@
 
 /* ======================== 工作模式 ======================== */
 
-#define MODE_MANUAL      0
-#define MODE_AUTO        1
+#define MODE_MANUAL      0           /* 手动发送 */
+#define MODE_AUTO        1           /* 自动发送 (运行中) */
+#define MODE_AUTO_PAUSE  2           /* 自动发送 (已暂停) */
 
 /* ======================== 消抖 ======================== */
 
-#define DEBOUNCE_MS      50      /* EXTI消抖时间 */
+#define DEBOUNCE_MS      80          /* EXTI消抖时间 */
 
 /* ======================== 全局状态变量 ======================== */
 
 extern volatile uint8_t  io_state;       /* 8路IO状态 (bit0~bit7) */
-extern volatile uint8_t  mode;           /* 当前工作模式 */
+extern volatile uint8_t  mode;           /* 当前工作模式 (0/1/2) */
 extern volatile uint8_t  send_flag;      /* 主循环发送标志 (1=需要发送) */
 extern volatile uint8_t  oled_flag;      /* 主循环OLED刷新标志 */
-extern volatile uint32_t sample_count;   /* 累计发送次数 */
+extern volatile uint32_t total_count;    /* 总发送次数 (永不重置) */
+extern volatile uint32_t mode_count;     /* 当前模式内发送次数 (切模式清零) */
 
 /* ======================== 函数接口 ======================== */
 

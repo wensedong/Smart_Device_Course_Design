@@ -117,7 +117,8 @@ int main(void)
 		{
       send_flag = 0;
       SendDataFrame(io_state);
-      sample_count++;
+      total_count++;                    /* 总计数: 永不重置 */
+      mode_count++;                     /* 当前模式计数: 切模式时在回调中清零 */;
     }
 
     /* 2. LED实时跟随 */

@@ -1,7 +1,7 @@
 Dependencies for Project 'Serial_Data_Collection', Target 'Serial_Data_Collection': (DO NOT MODIFY !)
 CompilerVersion: 5060750::V5.06 update 6 (build 750)::.\ARMCC
 F (startup_stm32f407xx.s)(0x6A48BC67)(--cpu Cortex-M4.fp.sp -g --apcs=interwork -I.\RTE\_Serial_Data_Collection-IC:\Users\asus\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IC:\Users\asus\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include--pd "__UVISION_VERSION SETA 543" --pd "STM32F407xx SETA 1" --pd "_RTE_ SETA 1"--list startup_stm32f407xx.lst --xref -o serial_data_collection\startup_stm32f407xx.o --depend serial_data_collection\startup_stm32f407xx.d)
-F (../Core/Src/main.c)(0x6A351C4C)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Mycode-I.\RTE\_Serial_Data_Collection-IC:\Users\asus\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IC:\Users\asus\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="543" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o serial_data_collection\main.o --omf_browse serial_data_collection\main.crf --depend serial_data_collection\main.d)
+F (../Core/Src/main.c)(0x6A48CB6F)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Mycode-I.\RTE\_Serial_Data_Collection-IC:\Users\asus\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IC:\Users\asus\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="543" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o serial_data_collection\main.o --omf_browse serial_data_collection\main.crf --depend serial_data_collection\main.d)
 I (../Core/Inc/main.h)(0x6A351874)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x6947F609)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x6A33B31F)
@@ -40,8 +40,8 @@ I (../Core/Inc/tim.h)(0x6A302806)
 I (../Core/Inc/usart.h)(0x6A302929)
 I (../Core/Inc/gpio.h)(0x6A30052C)
 I (../Mycode/oled.h)(0x6A302B42)
-I (../Mycode/daq.h)(0x6A48C250)
-I (../Mycode/display.h)(0x6A3518BD)
+I (../Mycode/daq.h)(0x6A48CEC8)
+I (../Mycode/display.h)(0x6A48C63A)
 I (F:\keil_v5.41\ARM\ARMCC\include\stdio.h)(0x5D9B348A)
 F (../Core/Src/gpio.c)(0x6A351873)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Mycode-I.\RTE\_Serial_Data_Collection-IC:\Users\asus\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IC:\Users\asus\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="543" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o serial_data_collection\gpio.o --omf_browse serial_data_collection\gpio.crf --depend serial_data_collection\gpio.d)
 I (../Core/Inc/gpio.h)(0x6A30052C)
@@ -879,8 +879,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x6947F609)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x6947F609)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x6947F609)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x6947F609)
-F (..\Mycode\daq.c)(0x6A48C240)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Mycode-I.\RTE\_Serial_Data_Collection-IC:\Users\asus\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IC:\Users\asus\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="543" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o serial_data_collection\daq.o --omf_browse serial_data_collection\daq.crf --depend serial_data_collection\daq.d)
-I (..\Mycode\daq.h)(0x6A48C250)
+F (..\Mycode\daq.c)(0x6A48CEC4)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Mycode-I.\RTE\_Serial_Data_Collection-IC:\Users\asus\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IC:\Users\asus\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="543" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o serial_data_collection\daq.o --omf_browse serial_data_collection\daq.crf --depend serial_data_collection\daq.d)
+I (..\Mycode\daq.h)(0x6A48CEC8)
 I (../Core/Inc/main.h)(0x6A351874)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x6947F609)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x6A33B31F)
@@ -916,8 +916,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x6947F609)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x6947F609)
 I (../Core/Inc/tim.h)(0x6A302806)
 I (../Core/Inc/usart.h)(0x6A302929)
-F (..\Mycode\display.c)(0x6A3518C6)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Mycode-I.\RTE\_Serial_Data_Collection-IC:\Users\asus\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IC:\Users\asus\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="543" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o serial_data_collection\display.o --omf_browse serial_data_collection\display.crf --depend serial_data_collection\display.d)
-I (..\Mycode\display.h)(0x6A3518BD)
+F (..\Mycode\display.c)(0x6A48CB2A)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Mycode-I.\RTE\_Serial_Data_Collection-IC:\Users\asus\AppData\Local\Arm\Packs\ARM\CMSIS\6.2.0\CMSIS\Core\Include-IC:\Users\asus\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include-D__UVISION_VERSION="543" -DSTM32F407xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F407xx-o serial_data_collection\display.o --omf_browse serial_data_collection\display.crf --depend serial_data_collection\display.d)
+I (..\Mycode\display.h)(0x6A48C63A)
 I (../Core/Inc/main.h)(0x6A351874)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x6947F609)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x6A33B31F)
@@ -953,7 +953,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x6947F609)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x6947F609)
 I (..\Mycode\oled.h)(0x6A302B42)
 I (../Core/Inc/i2c.h)(0x6A302805)
-I (..\Mycode\daq.h)(0x6A48C250)
+I (..\Mycode\daq.h)(0x6A48CEC8)
 I (../Core/Inc/tim.h)(0x6A302806)
 I (../Core/Inc/usart.h)(0x6A302929)
 I (F:\keil_v5.41\ARM\ARMCC\include\stdio.h)(0x5D9B348A)

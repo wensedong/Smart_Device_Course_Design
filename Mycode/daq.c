@@ -2,15 +2,19 @@
  ******************************************************************************
  * @file    daq.c
  * @brief   数据采集与通信模块实现
- *          ┌─────────────────────────────────────────┐
- *          │  架构: EXTI 改状态, TIM2 管发送, 主循环刷屏 │
- *          ├─────────────────────────────────────────┤
- *          │  8x IO按钮 (PD1~PD9) → EXTI → 翻转 bit   │
- *          │  KEY_AUTO  (PA0)     → EXTI0 → 手动发送   │
- *          │  KEY_MAUUL (PE4)     → EXTI4 → 切换自动   │
- *          │  TIM2 100ms          → 自动1s发 + OLED定时 │
- *          │  USART1              → PC指令 0x01查询     │
- *          └─────────────────────────────────────────┘
+ *          ┌──────────────────────────────────────────────┐
+ *          │  架构: EXTI 改状态, TIM2 管发送, 主循环刷屏    │
+ *          ├──────────────────────────────────────────────┤
+ *          │  8x IO按钮 (PD1~PD9) → EXTI → 翻转 bit       │
+ *          │  KEY_AUTO  (PA0)     → EXTI0 → 手动发送       │
+ *          │  KEY_MAUUL (PE4)     → EXTI4 → AUTO/Pause切换 │
+ *          │  TIM2 100ms          → 自动1s发 + OLED定时     │
+ *          │  USART1              → PC指令 0x01查询        │
+ *          │                                               │
+ *          │  计数逻辑:                                     │
+ *          │  - total_count: 永不重置, 任何发送都+1          │
+ *          │  - mode_count:  切 MANUAL↔AUTO 清零, 同模式累加│
+ *          └──────────────────────────────────────────────┘
  ******************************************************************************
  */
 
@@ -22,7 +26,8 @@ volatile uint8_t  io_state     = 0;
 volatile uint8_t  mode         = MODE_MANUAL;   /* 默认手动 */
 volatile uint8_t  send_flag    = 0;
 volatile uint8_t  oled_flag    = 0;
-volatile uint32_t sample_count = 0;
+volatile uint32_t total_count  = 0;             /* 总计数 (永不重置) */
+volatile uint32_t mode_count   = 0;             /* 当前模式内计数 */
 
 static uint8_t  rx_byte;                        /* UART接收缓冲 */
 static uint32_t last_tick[10];                  /* 消抖: 记录每个bit的上次触发时刻 */
@@ -95,8 +100,8 @@ void ProcessCommand(uint8_t cmd)
 /**
  * @brief  所有GPIO EXTI的统一回调
  *         - IO按钮 (IN1~IN8): 消抖 → 翻转 io_state 对应位
- *         - KEY_AUTO  (PA0): 消抖 → 切手动 → 立即发送一次
- *         - KEY_MAUUL (PE4): 消抖 → 切自动
+ *         - KEY_AUTO  (PA0): 消抖 → 切手动 → 清零mode_count → 立即发送
+ *         - KEY_MAUUL (PE4): 消抖 → 三态循环 MANUAL→AUTO→AUTO_PAUSE→AUTO→...
  */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
@@ -112,22 +117,44 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         return;
     }
 
-    /* ---- KEY_AUTO (PA0): 手动发送一次 ---- */
+    /* ---- KEY_AUTO (PA0): 手动发送 ---- */
     if (GPIO_Pin == KEY_AUTO_Pin) {
         if (now - last_tick[8] < DEBOUNCE_MS) return;
         last_tick[8] = now;
-        mode      = MODE_MANUAL;
-        auto_tick = 0;
-        send_flag = 1;                  /* 通知主循环发送 */
+
+        /* 防抖附加: 确认引脚确实为高电平 (滤除释放回弹的毛刺) */
+        if (HAL_GPIO_ReadPin(KEY_AUTO_GPIO_Port, KEY_AUTO_Pin) == GPIO_PIN_RESET)
+            return;
+
+        /* 仅在从其他模式切入时清零 mode_count, 已在MANUAL则保持累加 */
+        if (mode != MODE_MANUAL) {
+            mode       = MODE_MANUAL;
+            mode_count = 0;
+        }
+        auto_tick  = 0;
+        send_flag  = 1;                 /* 主循环: total_count++, mode_count++ */
         return;
     }
 
-    /* ---- KEY_MAUUL (PE4): 切换自动模式 ---- */
+    /* ---- KEY_MAUUL (PE4): 三态切换 ---- */
     if (GPIO_Pin == KEY_MAUUL_Pin) {
         if (now - last_tick[9] < DEBOUNCE_MS) return;
         last_tick[9] = now;
-        mode      = MODE_AUTO;
-        auto_tick = 0;                  /* 清计数, 立即对齐 */
+
+        /* 防抖附加: 确认引脚确实为高电平 */
+        if (HAL_GPIO_ReadPin(KEY_MAUUL_GPIO_Port, KEY_MAUUL_Pin) == GPIO_PIN_RESET)
+            return;
+
+        if (mode == MODE_MANUAL) {
+            mode       = MODE_AUTO;     /* 手动 → 自动(运行) */
+            mode_count = 0;             /* 切模式 → 清零 */
+        } else if (mode == MODE_AUTO) {
+            mode = MODE_AUTO_PAUSE;     /* 自动(运行) → 自动(暂停) */
+            /* mode_count 保留, 暂停时不增长 */
+        } else { /* MODE_AUTO_PAUSE */
+            mode = MODE_AUTO;           /* 自动(暂停) → 自动(运行) */
+        }
+        auto_tick = 0;                  /* 重新对齐 1s 周期 */
         return;
     }
 }
@@ -136,7 +163,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 /**
  * @brief  TIM2定时中断回调 (每100ms触发)
- *         - 自动模式: 每10次(1s)置 send_flag
+ *         - MODE_AUTO:       每10次(1s)置 send_flag
+ *         - MODE_AUTO_PAUSE: 不发送 (暂停)
+ *         - MODE_MANUAL:     不发送 (由 PA0 触发)
  *         - 每5次(500ms)置 oled_flag
  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
@@ -145,13 +174,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
     static uint8_t tick_oled = 0;
 
-    /* 自动模式: 1s发一次 */
+    /* 自动模式 (运行中): 1s发一次 */
     if (mode == MODE_AUTO) {
         if (++auto_tick >= 10) {
             auto_tick = 0;
             send_flag = 1;
         }
     }
+    /* MODE_AUTO_PAUSE / MODE_MANUAL: 不自动发送 */
 
     /* OLED: 500ms刷新 */
     if (++tick_oled >= 5) {
