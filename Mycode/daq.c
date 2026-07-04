@@ -61,18 +61,24 @@ void DAQ_Init(void)
 /* ======================== 数据帧发送 ======================== */
 
 /**
- * @brief  发送4字节数据帧到上位机
- *         帧格式: {0xA5, data, ~data, 0x5A}
+ * @brief  发送8位二进制字符串到上位机 (ASCII文本格式)
+ *         输出格式: "d7d6d5d4d3d2d1d0\r\n" (共10字节)
+ *         例如:  "00110101\r\n" 表示 bit7=0,bit6=0,bit5=1,...
  */
 void SendDataFrame(uint8_t data)
 {
-    uint8_t frame[4] = {
-        FRAME_HEADER,
-        data,
-        ~data,
-        FRAME_FOOTER
-    };
-    HAL_UART_Transmit(&huart1, frame, 4, 100);
+    char buf[12];
+    uint8_t i;
+
+    /* 逐位转换为 '0' / '1' 字符 (高位在前) */
+    for (i = 0; i < 8; i++) {
+        buf[i] = (data >> (7 - i)) & 1 ? '1' : '0';
+    }
+    buf[8]  = '\r';
+    buf[9]  = '\n';
+    buf[10] = '\0';
+
+    HAL_UART_Transmit(&huart1, (uint8_t *)buf, 10, 100);
 }
 
 /* ======================== 指令解析 ======================== */
